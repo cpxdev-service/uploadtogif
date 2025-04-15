@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Upload Images";
+}
+
+
+<h1>Upload Images</h1>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success" role="alert">
+        @ViewBag.Message
+    </div>
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Error
+    </div>
+}
+
+@* The form that handles the upload *@
+<form asp-controller="Upload" asp-action="ProcessImages" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="imageFiles">Select multiple images (PNG or JPEG only)</label>
+        <input type="file" id="imageFiles" name="files" multiple
+               accept=".png,.jpg,.jpeg" class="form-control" />
+    </div>
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Upload Images</button>
+    </div>
+</form>
+<script>
+        document.getElementById('imageFiles').addEventListener('change', function(e) {
+        const files = e.target.files;
+        const validTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+        let allValid = true;
+
+        for (let i = 0; i < files.length; i++) {
+            if (!validTypes.includes(files[i].type)) {
+                allValid = false;
+                break;
+            }
+        }
+
+        if (!allValid) {
+            alert('Please select only PNG or JPEG images.');
+            e.target.value = ''; // Clear the selection
+        }
+    });
+
+</script>
