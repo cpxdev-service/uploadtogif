@@ -57,18 +57,23 @@
       init: function() {
           this.on("successmultiple", function(file, response) {
             console.log("Server response", response);
-            const url = window.location.origin + response.uploadId
+                if (response.uploadId !== undefined) {
+                     const url = window.location.origin + response.uploadId
+                      QrCreator.render({
+                          text: url,
+                          radius: 0.5, // 0.0 to 0.5
+                          ecLevel: 'H', // L, M, Q, H
+                          fill: '#000', // foreground color
+                          background: null, // color or null for transparent
+                          size: 256 // in pixels
+                        }, document.querySelector('#qr-code'));
+                } else {
+                    alert(JSON.stringify(response))
+                }
+           
             setTimeout(() => {
                 this.removeAllFiles(true)
             }, 600)
-              QrCreator.render({
-                  text: url,
-                  radius: 0.5, // 0.0 to 0.5
-                  ecLevel: 'H', // L, M, Q, H
-                  fill: '#000', // foreground color
-                  background: null, // color or null for transparent
-                  size: 256 // in pixels
-                }, document.querySelector('#qr-code'));
         });
         }
     });
