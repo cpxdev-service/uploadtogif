@@ -21,6 +21,7 @@ namespace GIFConverterOnline.Controllers
             if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "blob")))
             {
                 Directory.Delete(Path.Combine(Directory.GetCurrentDirectory(), "blob"));
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "blob"));
             }
             return Ok();
         }
@@ -36,11 +37,6 @@ namespace GIFConverterOnline.Controllers
                 ViewBag.Error = "No files were selected.";
                 return View(); // Return to the view with an error message
             }
-
-            //if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "blob")))
-            //{
-            //    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "blob"));
-            //}
 
             using var collection = new MagickImageCollection();
             foreach (var file in files)
