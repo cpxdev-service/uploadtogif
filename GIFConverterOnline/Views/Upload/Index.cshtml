@@ -57,6 +57,7 @@
       init: function() {
           this.on("successmultiple", function(file, response) {
             console.log("Server response", response);
+            document.querySelector("#submitBtn").disabled = false;
                 if (response.uploadId !== undefined) {
                      const url = window.location.origin + response.uploadId
                       QrCreator.render({
@@ -81,6 +82,8 @@
     // Trigger the upload when the button is clicked
     document.querySelector("#submitBtn").addEventListener("click", function(e) {
       e.preventDefault();
+      this.disabled = true;
+      document.getElementById('qr-code').innerHTML = '';
       myDropzone.processQueue();           // manually start upload :contentReference[oaicite:10]{index=10}
     });
 
