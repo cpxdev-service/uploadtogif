@@ -5,6 +5,7 @@ builder.Services.AddControllersWithViews();
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.Limits.MaxRequestBodySize = 524288000;  // 500 MB
+    options.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(1);
     options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(1);
 });
 
