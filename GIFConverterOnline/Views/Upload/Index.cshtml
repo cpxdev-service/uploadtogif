@@ -2,7 +2,9 @@
     ViewBag.Title = "Upload Images";
 }
 
-
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/qr-creator/dist/qr-creator.min.js"></script>
 <h1>Upload Images</h1>
 
 @if (ViewBag.Message != null)
@@ -20,33 +22,61 @@
 }
 
 @* The form that handles the upload *@
-<form asp-controller="Upload" asp-action="ProcessImages" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-        <label for="imageFiles">Select multiple images (PNG or JPEG only)</label>
-        <input type="file" id="imageFiles" name="files" multiple
-               accept=".png,.jpg,.jpeg" class="form-control" />
-    </div>
-    <div class="mt-3">
-        <button type="submit" class="btn btn-primary">Upload Images</button>
+
+<form id="uploadForm"
+      asp-controller="upload"
+      method="post"
+      asp-action="UploadImages"
+      enctype="multipart/form-data"
+      class="dropzone">
+    <div class="fallback">
+        <input name="files" type="file" multiple /> <!-- Fallback for non-JS clients -->
     </div>
 </form>
+<div class="card mt-4">
+    <div class="card-body mb-4">
+        <div id="qr-code"></div>
+        <p>QR Code will be show here. This QR Code will be work in one time.</p>
+    </div>
+</div>
+<div class="mt-4">
+    <button id="submitBtn" class="btn btn-success">Submit Files</button>
+</div>
 <script>
-        document.getElementById('imageFiles').addEventListener('change', function(e) {
-        const files = e.target.files;
-        const validTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-        let allValid = true;
+     Dropzone.autoDiscover = false;
 
-        for (let i = 0; i < files.length; i++) {
-            if (!validTypes.includes(files[i].type)) {
-                allValid = false;
-                break;
-            }
+    // Initialize Dropzone on the form element itself
+    const myDropzone = new Dropzone("#uploadForm", {
+      url: "/upload/UploadImages",           // or omit to use form action
+      autoProcessQueue: false,            // wait for manual trigger
+      uploadMultiple: true,               // send all files in one request
+      parallelUploads: 100,
+      maxFiles: 100,
+      acceptedFiles: "image/png,image/jpeg",
+      paramName: "files",
+      init: function() {
+          this.on("successmultiple", function(file, response) {
+            console.log("Server response", response);
+            const url = window.location.origin + response.uploadId
+            setTimeout(() => {
+                this.removeAllFiles(true)
+            }, 600)
+              QrCreator.render({
+                  text: url,
+                  radius: 0.5, // 0.0 to 0.5
+                  ecLevel: 'H', // L, M, Q, H
+                  fill: '#000', // foreground color
+                  background: null, // color or null for transparent
+                  size: 256 // in pixels
+                }, document.querySelector('#qr-code'));
+        });
         }
+    });
 
-        if (!allValid) {
-            alert('Please select only PNG or JPEG images.');
-            e.target.value = ''; // Clear the selection
-        }
+    // Trigger the upload when the button is clicked
+    document.querySelector("#submitBtn").addEventListener("click", function(e) {
+      e.preventDefault();
+      myDropzone.processQueue();           // manually start upload :contentReference[oaicite:10]{index=10}
     });
 
 </script>
