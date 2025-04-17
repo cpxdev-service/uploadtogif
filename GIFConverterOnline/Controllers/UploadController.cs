@@ -47,7 +47,7 @@ namespace GIFConverterOnline.Controllers
             {
                 await using var stream = file.OpenReadStream();
                 var img = new MagickImage(stream);
-                img.Extent(img.Width, img.Height, Gravity.Center, MagickColors.Transparent);
+                img.Extent(img.Width, img.Height, Gravity.Forget, MagickColors.Transparent);
                 collection.Add(img);
             }
 
