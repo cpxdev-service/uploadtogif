@@ -27,7 +27,7 @@ namespace GIFConverterOnline.Controllers
 
         [HttpPost]
         [RequestSizeLimit(100_000_000)]
-        //[ValidateAntiForgeryToken] // Good practice for security against CSRF attacks
+        [ValidateAntiForgeryToken] // Good practice for security against CSRF attacks
         public async Task<IActionResult> UploadImages() // Parameter name matches input name="imageFiles"
         {
             var files = Request.Form.Files; 
@@ -37,10 +37,10 @@ namespace GIFConverterOnline.Controllers
                 return View(); // Return to the view with an error message
             }
 
-            if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "blob")))
-            {
-                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "blob"));
-            }
+            //if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "blob")))
+            //{
+            //    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "blob"));
+            //}
 
             using var collection = new MagickImageCollection();
             foreach (var file in files)
