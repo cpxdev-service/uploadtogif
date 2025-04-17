@@ -15,6 +15,16 @@ namespace GIFConverterOnline.Controllers
             return View();
         }
 
+        [HttpDelete]
+        public IActionResult clear()
+        {
+            if (Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "blob")))
+            {
+                Directory.Delete(Path.Combine(Directory.GetCurrentDirectory(), "blob"));
+            }
+            return Ok();
+        }
+
         [HttpPost]
         [RequestSizeLimit(100_000_000)]
         [ValidateAntiForgeryToken] // Good practice for security against CSRF attacks
@@ -37,14 +47,14 @@ namespace GIFConverterOnline.Controllers
             {
                 await using var stream = file.OpenReadStream();
                 var img = new MagickImage(stream);
-                img.Extent(600, 600, Gravity.Center, MagickColors.Transparent);
+                img.Extent(img.Width, img.Height, Gravity.Center, MagickColors.Transparent);
                 collection.Add(img);
             }
 
             // Frame configuration
             foreach (var frame in collection)
             {
-                frame.AnimationDelay = 1000;
+                frame.AnimationDelay = 100;
                 frame.GifDisposeMethod = GifDisposeMethod.Previous;
             }
 
