@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Http.Features;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -26,7 +24,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run(async context =>
-{
-    context.Features.Get<IHttpMaxRequestBodySizeFeature>().MaxRequestBodySize = 100_000_000;
-});
+app.Run();

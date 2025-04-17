@@ -34,7 +34,8 @@ namespace GIFConverterOnline.Controllers
         }
 
         [HttpPost]
-        [RequestSizeLimit(100_000_000)]
+        [RequestSizeLimit(500 * 1024 * 1024)]
+        [RequestFormLimits(MultipartBodyLengthLimit = 500 * 1024 * 1024)]
         [ValidateAntiForgeryToken] // Good practice for security against CSRF attacks
         public async Task<IActionResult> UploadImages() // Parameter name matches input name="imageFiles"
         {
