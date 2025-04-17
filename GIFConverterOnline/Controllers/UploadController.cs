@@ -19,10 +19,16 @@ namespace GIFConverterOnline.Controllers
         [HttpDelete]
         public IActionResult clear()
         {
-            var blobPath = Path.Combine(Directory.GetCurrentDirectory(), "blob");
-            if (Directory.Exists(blobPath))
-                Directory.Delete(blobPath, recursive: true);
-            Directory.CreateDirectory(blobPath);
+            System.IO.DirectoryInfo di = new DirectoryInfo(Path.Combine(Directory.GetCurrentDirectory(), "blob"));
+
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+            foreach (DirectoryInfo dir in di.GetDirectories())
+            {
+                dir.Delete(true);
+            }
 
             return Ok();
         }
