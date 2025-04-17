@@ -2,6 +2,8 @@
 
 # This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+RUN mkdir -p /app/blob \
+    && chown -R appuser:appuser /app/blob
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
