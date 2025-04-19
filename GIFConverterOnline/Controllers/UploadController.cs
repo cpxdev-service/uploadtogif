@@ -67,9 +67,9 @@ namespace GIFConverterOnline.Controllers
                 collection.Quantize(new QuantizeSettings { Colors = 256 });
 
                 string guid = Guid.NewGuid().ToString();
-                var output = Path.Combine(
-                    Directory.GetCurrentDirectory(), "blob", $"{guid}.gif");
-                collection.Write(output, MagickFormat.Gif);
+                //var output = Path.Combine(
+                //    Directory.GetCurrentDirectory(), "blob", $"{guid}.gif");
+                //collection.Write(output, MagickFormat.Gif);
 
                 return new JsonResult(new { uploadId = "/download/file/" + guid });
             }
