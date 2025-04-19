@@ -48,23 +48,23 @@ namespace GIFConverterOnline.Controllers
                     return View(); // Return to the view with an error message
                 }
 
-                using var collection = new MagickImageCollection();
-                foreach (var file in files)
-                {
-                    await using var stream = file.OpenReadStream();
-                    var img = new MagickImage(stream);
-                    img.Extent(img.Width, img.Height, Gravity.Forget, MagickColors.Transparent);
-                    collection.Add(img);
-                }
+                //using var collection = new MagickImageCollection();
+                //foreach (var file in files)
+                //{
+                //    await using var stream = file.OpenReadStream();
+                //    var img = new MagickImage(stream);
+                //    img.Extent(img.Width, img.Height, Gravity.Forget, MagickColors.Transparent);
+                //    collection.Add(img);
+                //}
 
-                // Frame configuration
-                foreach (var frame in collection)
-                {
-                    frame.AnimationDelay = 100;
-                    frame.GifDisposeMethod = GifDisposeMethod.Previous;
-                }
+                //// Frame configuration
+                //foreach (var frame in collection)
+                //{
+                //    frame.AnimationDelay = 100;
+                //    frame.GifDisposeMethod = GifDisposeMethod.Previous;
+                //}
 
-                collection.Quantize(new QuantizeSettings { Colors = 256 });
+                //collection.Quantize(new QuantizeSettings { Colors = 256 });
 
                 string guid = Guid.NewGuid().ToString();
                 //var output = Path.Combine(
